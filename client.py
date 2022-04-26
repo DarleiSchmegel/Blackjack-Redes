@@ -1,16 +1,23 @@
 import socket
 
+import sys
 
 class Client:
-
+    if len(sys.argv) > 1:
+        CLIENT_IP = sys.argv[1]
+        CLIENT_PORT = int(sys.argv[2])
+    else:
+        CLIENT_IP = 'localhost'
+        CLIENT_PORT = 5555
+    
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.host = "localhost" # For this to work on your machine this must be equal to the ipv4 address of the machine running the server
+        self.host = self.CLIENT_IP # For this to work on your machine this must be equal to the ipv4 address of the machine running the server
                                     # You can find this address by typing ipconfig in CMD and copying the ipv4 address. Again this must be the servers
                                     # ipv4 address. This feild will be the same for all your clients.
         
         #self.host = '25.10.205.39'
-        self.port = 5555
+        self.port = self.CLIENT_PORT
         self.addr = (self.host, self.port)
         self.id = self.connect()
 

@@ -1,9 +1,16 @@
 import socket
 from _thread import *
+import sys
+
+if len(sys.argv) > 1:
+    server = sys.argv[1]
+    port = int(sys.argv[2])
+else:
+    server = 'localhost'
+    port = 5555
+
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-server = "localhost"
-port = 5555
 server_ip = socket.gethostbyname(server)
 print("SERVER IP", server_ip)
 
