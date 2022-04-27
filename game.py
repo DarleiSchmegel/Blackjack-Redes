@@ -87,11 +87,10 @@ class Game:
             # Update Canvas
             self.canvas.draw_background()
 
-            if self.player2.IN_GAME == 0:
+            if self.player2.IN_GAME == 0 and self.player.IN_GAME == 1:
                 status = "Aguardando outro jogador"
                 self.updatePlayer()
             elif (self.player2.IN_GAME == 1 and self.player2.ALREADY_PLAYED == 0) and self.player.IN_GAME == 0: 
-                self.player.MY_TURN == 0 and self.player2.MY_TURN == 0
                 self.player.IN_GAME = 0
                 self.player.ALREADY_PLAYED = 0 # esse cara vai dizer se ele já jogou um vez
                 self.player.MY_TURN = 0
@@ -146,8 +145,10 @@ class Game:
                     if keys[pygame.K_p]:
                         self.player.MY_TURN = 1
                         self.player.ALREADY_PLAYED = 1
+                        if(self.player.MY_HAND < self.player2.MY_HAND) and self.player2.ALREADY_PLAYED ==1:   
+                            self.player.ROUND_OVER = 1 
                         self.updatePlayer()
-                        status = "Aguarde o Adversário jogar!"
+                        status = "Aguarde o Adversário jogar!!"
                         time.sleep(0.5)
                 else:
                     if(self.player.MY_TURN == 1 and self.player2.ALREADY_PLAYED != 1 and self.player.ROUND_OVER != 1):
@@ -158,13 +159,18 @@ class Game:
              
             #Fim do Round, Verificar o resultado               
             if self.player.ALREADY_PLAYED == 1 and self.player2.ALREADY_PLAYED == 1:
-                if self.player2.ROUND_OVER == 1 and self.player.MY_HAND <= 21:
+                if (self.player2.ROUND_OVER == 1 and self.player.MY_HAND <= 21) or self.player.MY_HAND < self.player2.MY_HAND:
                     status = "Você Ganhou"
 
-                if self.player.MY_HAND > 21 :
+                if self.player.MY_HAND > 21:
                     status = "Você perdeu"
                     self.player.ROUND_OVER = 1
-                        
+                    
+                if self.player.MY_HAND < 21 and self.player2.MY_HAND < 21:
+                    if (self.player.MY_HAND < self.player2.MY_HAND):
+                        status = "Você perdeu"
+                        self.player.ROUND_OVER = 1
+                     
                 if (self.player.MY_HAND == self.player2.MY_HAND): 
                     
                     if(self.player.ALREADY_PLAYED == 1 and self.player2.ALREADY_PLAYED == 1):
